@@ -1,0 +1,22 @@
+/*Cores principais*/
+$cor1: #464d02;
+$cinza1: #f1f1f1;
+
+/*fonts*/
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+body{
+}
+nav{
+	background:$cor1 !important;
+	height:60px !important;
+	a{
+		width:100px;
+		color: #fff !important;
+		font-family: 'Roboto', sans-serif;
+		text-shadow: 2px 2px 2px #000000;
+		font-size: 1.2em;
+		&:hover{
+		 color: $cinza1 !important;
+		}
+	}
+}
