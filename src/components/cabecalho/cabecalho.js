@@ -11,14 +11,15 @@ class Cabecalho extends Component{
 				  <Navbar.Collapse id="basic-navbar-nav" >
 					<Nav className="mr-auto" style={{width:'100%', justifyContent: 'center', alignItems: 'center'}}>
 					  <Nav.Link href="#home">Home</Nav.Link>
-					  <Nav.Link href="#link">Cadastro</Nav.Link>
-					  <NavDropdown title="Buscar" id="basic-nav-dropdown">
+					  <Nav.Link href="/cadastro">Cadastro</Nav.Link>
+					  <Nav.Link href="#link">Buscar</Nav.Link>
+					  {/*<NavDropdown title="Buscar" id="basic-nav-dropdown">
 						<NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
 						<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
 						<NavDropdown.Divider />
 						<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-					  </NavDropdown>
+					  </NavDropdown>*/}
 					</Nav>
 				  </Navbar.Collapse>
 				</Navbar>

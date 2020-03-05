@@ -1,5 +1,6 @@
 /*Cores principais*/
-$cor1: #464d02;
+$vinho: #59321b;
+$cinza: #343a40;
 $cinza1: #f1f1f1;
 
 /*fonts*/
@@ -7,13 +8,13 @@ $cinza1: #f1f1f1;
 body{
 }
 nav{
-	background:$cor1 !important;
+	background:$cinza !important;
 	height:60px !important;
 	a{
-		width:100px;
+		width:150px;
 		color: #fff !important;
 		font-family: 'Roboto', sans-serif;
-		text-shadow: 2px 2px 2px #000000;
+		/*text-shadow: 2px 2px 2px #000000;*/
 		font-size: 1.2em;
 		&:hover{
 		 color: $cinza1 !important;
