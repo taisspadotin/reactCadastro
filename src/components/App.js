@@ -71,10 +71,10 @@ console.log(error);
     render(){
         return(
           <div>
-		  <Cabecalho />
+		  {/*<Cabecalho />*/}
 		  <Main />
 		  
-		  {   <Tabela arraycarros={this.state.db}></Tabela>}
+		  { /*  <Tabela arraycarros={this.state.db}></Tabela>*/}
         </div>
         );
     }

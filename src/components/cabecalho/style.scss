@@ -2,22 +2,58 @@
 $vinho: #59321b;
 $cinza: #343a40;
 $cinza1: #f1f1f1;
-
+$sombra: #4d4f44;
+$corbase: #651210;
 /*fonts*/
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 body{
 }
-nav{
+/*nav{
 	background:$cinza !important;
 	height:60px !important;
 	a{
 		width:150px;
 		color: #fff !important;
 		font-family: 'Roboto', sans-serif;
-		/*text-shadow: 2px 2px 2px #000000;*/
 		font-size: 1.2em;
 		&:hover{
 		 color: $cinza1 !important;
+		}
+	}
+}*/
+@mixin fontes{
+	color: #fff !important;
+	text-shadow: 1px 2px 2px $sombra;
+}
+
+.cabecalho_Principal{
+	/*position: fixed !important;*/
+	width:100%;
+	/*z-index: 9999;*/
+	background: $corbase;
+	height:60px !important;
+	a{
+		width:150px;
+		@include fontes;
+		font-size: 1.2em;
+		font-family: 'Roboto', sans-serif;
+		&:hover{
+		 color: #a8c0ca !important;
+		}
+		
+	}
+	h3{
+		font-size: 1.2em;
+		font-family: 'Roboto', sans-serif;
+	}
+	
+	.nav-link{
+		font-size: 1em;
+		font-family: 'Roboto', sans-serif;
+		color: #fff !important;
+		a:hover{
+			text-decoration: none !important;
+			
 		}
 	}
 }
