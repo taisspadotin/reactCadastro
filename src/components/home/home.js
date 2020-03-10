@@ -4,32 +4,40 @@ import './style.scss';
 import { Label } from 'semantic-ui-react'
 import {Link} from 'react-router-dom';
 
-var pagina = 0;
+
 
 class Cabecalho extends Component{
 	constructor(props){
 		super(props);
-		
+		this.state ={
+			pagina: 0
+		};
 		this.cabecalhoRef = React.createRef(); //current
 	}
 	componentDidMount() {
-		window.onload = function() {
+		//window.onload = function() {
 			window.addEventListener('scroll', this.handleScroll);
-		}
+		//}
 		
 	}
 	handleScroll =()=>{
-		if(pagina == 0)
+		if(this.state.pagina == 0)
 			{
 				if(window.pageYOffset>100)
-				{	this.cabecalhoRef.current.style.background = "#23261f";
-					pagina = 1;
+				{	if(this.cabecalhoRef.current != null)
+					{
+						this.cabecalhoRef.current.style.background = "#23261f";
+						this.setState({pagina: 1});
+					}
 				}
 			}
-			else if(pagina ==1){
+			else if(this.state.pagina ==1){
 				if(window.pageYOffset == 0)
-				{	this.cabecalhoRef.current.style.background = "none";
-					pagina = 0;
+				{	
+					if(this.cabecalhoRef.current != null)
+							{this.cabecalhoRef.current.style.background = "none";
+							this.setState({pagina: 0});
+					}
 				}
 			}
 	}
