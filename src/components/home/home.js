@@ -7,28 +7,36 @@ import {Link} from 'react-router-dom';
 var pagina = 0;
 
 class Cabecalho extends Component{
-	componentDidMount() {
+	constructor(props){
+		super(props);
 		
-		window.onscroll= function(){
-			if(pagina == 0)
+		this.cabecalhoRef = React.createRef(); //current
+	}
+	componentDidMount() {
+		window.onload = function() {
+			window.addEventListener('scroll', this.handleScroll);
+		}
+		
+	}
+	handleScroll =()=>{
+		if(pagina == 0)
 			{
 				if(window.pageYOffset>100)
-				{	document.getElementById('cabecalho').style.background = "#23261f";
+				{	this.cabecalhoRef.current.style.background = "#23261f";
 					pagina = 1;
 				}
 			}
 			else if(pagina ==1){
 				if(window.pageYOffset == 0)
-				{	document.getElementById('cabecalho').style.background = "none";
+				{	this.cabecalhoRef.current.style.background = "none";
 					pagina = 0;
 				}
 			}
-		}
 	}
 		render(){
 			return(
 			<>
-				<Navbar className="cabecalho" id="cabecalho" expand="lg">
+				<Navbar className="cabecalho" id="cabecalho" expand="lg" ref={this.cabecalhoRef}>
 				  <Navbar.Toggle aria-controls="basic-navbar-nav" />
 				  <Navbar.Collapse id="basic-navbar-nav" >
 					<Nav className="mr-auto" style={{width:'100%', justifyContent: 'center', alignItems: 'center'}}>
@@ -108,7 +116,7 @@ class Inferior extends Component{
 							</Col>
 						</Row>
 					</Col>
-					<Col xs={12} md={3}>	
+					<Col xs={12} md={3} >	
 						<Row className="d-flex justify-content-center">
 							<Circular cor="#879852" >
 								<i className="code icon"></i>
@@ -143,6 +151,12 @@ class Informacoes extends Component{
 			/*this.div1.current.style.opacity ='1';
 			this.div1.current.style.transition = 'opacity .5s linear';
 			this.div1.current.style.transitionDuration = '0.5s';*/
+			
+		/*this.div1.current.style.webkitTransform = 'scale(0.8)';
+		this.div1.current.style.msTransform = 'scale(0.8)';
+		this.div1.current.style.transform = 'scale(0.8)';*/
+		
+		
 			this.div1.current.style.display = "none";
 			this.div2.current.style.display = "block";
 		}
@@ -156,7 +170,7 @@ class Informacoes extends Component{
 			<div className="informacoes">
 				<Row>
 				<Col xs={12} md={6} className="lado1" style={{textAlign: 'center'}} align="center">
-					<div ref={this.div1} onClick={()=>this.moveDiv(1)}>
+					<div ref={this.div1} onClick={()=>this.moveDiv(1)} style={{transition: 'opacity .5s linear'}}>
 						<img src="https://cdn.pixabay.com/photo/2016/08/11/23/55/redwood-national-park-1587301_960_720.jpg" style={{width:'100%', height: '100%'}}/>
 					</div>
 					<div ref={this.div2} onClick={()=>this.moveDiv(2)} style={{display:'none'}}>
