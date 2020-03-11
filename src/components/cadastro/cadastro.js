@@ -103,6 +103,18 @@ class Cadastro extends Component{
 		this.refTelefone.current.value = telefone; 
 		
 	}
+	Alterar = () =>{
+		alert(this.refId.current.value);
+	}
+	Excluir =() =>{
+		let id = this.refId.current.value;
+		const user = {
+			 id: id
+			};	
+			
+			axios.delete(`http://localhost/apiReact/Pessoa.php`, {params: {id: id}});
+		
+	}
 	render(){
 		let tabela_exibe = '';
 		if(this.state.registros != 0)//Se tiver algum registro na tabela ele insere a parte de busca com cabeçalho no corpo
@@ -144,6 +156,7 @@ class Cadastro extends Component{
 						<div className="label-float">
 						<div className="sub">
 							<input type="text" onInput={(e) => this.setState({nome: e.target.value})}  ref={this.setRefNome} placeholder=" " />
+							<label>Nome</label>		
 							<label>Nome</label>		
 							<small>Preencha o nome completo</small>		
 						</div>
@@ -192,9 +205,9 @@ class Cadastro extends Component{
 					
 						<Button onClick={this.Cadastrar}>Cadastrar</Button>
 					
-						<Button >Editar</Button>
+						<Button onClick={()=>this.Alterar()}>Alterar</Button>
 						
-						<Button >Excluir</Button>
+						<Button onClick={()=>this.Excluir()}>Excluir</Button>
 					</Col>					
 				</Row>
 				<Row className="show-grid my-4" align="center">
