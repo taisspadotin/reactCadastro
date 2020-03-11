@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
 import {Container, Row, Col} from 'react-bootstrap';
-import axios from 'axios';
+import axios, {serviceUrl, onSuccess,onFailure} from 'axios';
 import './style.scss';
 import Cabecalho from '../cabecalho/cabecalho';;
 
@@ -11,6 +11,18 @@ const options = [
   { key: 'o', text: 'Outro', value: 'outro' },
 ]
 
+
+class ListaPessoas extends Component{
+	
+	render(){
+		return(
+		<>
+		<h3>{this.props.nome}</h3>
+		</>
+		)
+	}
+}
+
 class Cadastro extends Component{
 	constructor(props){
 		super(props);
@@ -19,14 +31,38 @@ class Cadastro extends Component{
 			cpf: '',
 			email: '',
 			telefone: '',
-			nascimento: ''
+			nascimento: '',
+			dados: [],
+			registros: 0
 		};
-		
 		/*REFS DOS INPUTS*/
 		this.INome = null;
 		this.setRefNome = element =>{
 				this.INome = element;
 		}
+		this.refCpf = React.createRef();
+		this.refNascimento = React.createRef();
+		this.refEmail = React.createRef();
+		this.refId = React.createRef();
+		this.refTelefone = React.createRef();
+	}
+	
+	componentDidMount() {
+		axios.defaults.baseURL = 'http://localhost/apiReact/Pessoa.php';
+		axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+		axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+		axios.get(serviceUrl, onSuccess, onFailure)
+		.then(resp => {
+			let d = (resp.data);
+			this.setState({dados:  d});
+			//console.log(this.state.dados);
+			this.setState({registros: d.length});
+			//console.log(resp.data);
+			
+		})
+		.catch(error => {
+			console.log(error);
+		})
 	}
 	
 	Cadastrar = () =>{
@@ -52,13 +88,45 @@ class Cadastro extends Component{
 				else{
 					alert('Dados inseridos com sucesso!');
 				}
-				console.log(res.data);
+				//console.log(res.data);
 			  })
 		}
 		//alert('yee');
 	}
-	
+	CarregaDados =(nome, id, cpf, nascimento, email, telefone)=>{
+		//alert('teste');
+		this.INome.value = nome;
+		this.refCpf.current.value = cpf; 
+		this.refId.current.value = id; 
+		this.refNascimento.current.value = nascimento; 
+		this.refEmail.current.value = email; 
+		this.refTelefone.current.value = telefone; 
+		
+	}
 	render(){
+		let tabela_exibe = '';
+		if(this.state.registros != 0)//Se tiver algum registro na tabela ele insere a parte de busca com cabeçalho no corpo
+		{
+			tabela_exibe = <table className="ui celled table">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>CPF</th>
+										<th>Nascimento</th>
+									</tr>
+								</thead>
+								 <tbody>
+								    {this.state.dados.map((row)=> 
+										<tr key={row.id} onClick={()=>this.CarregaDados(row.nome, row.id, row.cpf, row.nascimento, row.email, row.telefone)}>
+											<td data-label="nome">{row.nome}</td>
+											<td data-label="cpf">{row.cpf}</td>
+											<td data-label="nascimento">{row.nascimento}</td>
+											
+										</tr>
+									)}	
+								</tbody>	
+							</table>;
+		}
 			return(
 			<>
 			<Cabecalho/>
@@ -85,13 +153,13 @@ class Cadastro extends Component{
 				<Row className="show-grid my-2">
 					<Col  xs={12} md={8}>
 						<div className="label-float">
-							<input type="text" onInput={(e) => this.setState({email: e.target.value})} placeholder=" " />
+							<input type="text" ref={this.refEmail} onInput={(e) => this.setState({email: e.target.value})} placeholder=" " />
 							<label>Email</label>
 						</div>
 					</Col>
 					<Col  xs={12} md={4}>
 						<div className="label-float">
-							<input type="text" onInput={(e) => this.setState({telefone: e.target.value})} placeholder=" " />
+							<input type="text" ref={this.refTelefone} onInput={(e) => this.setState({telefone: e.target.value})} placeholder=" " />
 							<label>Telefone</label>
 						</div>
 					</Col>
@@ -99,16 +167,17 @@ class Cadastro extends Component{
 				<Row className="show-grid my-2">
 					<Col xs={12} md={6}>
 						<div className="label-float">
-							<input type="text"  placeholder=" " />
+							<input type="text" ref={this.refNascimento} placeholder=" " />
 							<label>Nascimento</label>
 						</div>
 					</Col>
 					<Col xs={12} md={6}>
 						<div className="label-float">
-							<input type="text" onInput={(e) => this.setState({cpf: e.target.value})} placeholder=" " />
+							<input type="text" ref={this.refCpf} onInput={(e) => this.setState({cpf: e.target.value})} placeholder=" " />
 							<label>CPF</label>
 						</div>
 					</Col>
+					<input type="hidden" ref={this.refId}/>
 					{/*<Col xs={12} md={2}>
 						<div className="label-float">
 							<Label>Ativo</Label>
@@ -120,35 +189,21 @@ class Cadastro extends Component{
 				<Row className="show-grid my-4">
 					<Col  align="center">
 						<button className="ui button">Limpar</button>
+					
 						<Button onClick={this.Cadastrar}>Cadastrar</Button>
-					</Col>	
+					
+						<Button >Editar</Button>
+						
+						<Button >Excluir</Button>
+					</Col>					
 				</Row>
-				{/*<Form.Field>
-					  <label>Nome Completo</label>
-					  <input placeholder='Nome Completo' onInput={(e) => this.setState({nome: e.target.value})}  ref={this.setRefNome}/>
-					</Form.Field>
-					<Form.Field>
-					  <label>Email</label>
-					  <input placeholder='Email' />
-					</Form.Field>
-					<Form.Group widths='equal'>
-					  <Form.Input fluid label='Data de nascimento' placeholder='00/00/0000' />
-					  <Form.Select
-						fluid
-						label='Genero'
-						options={options}
-						placeholder='Genero'
-					  />
-					</Form.Group>
-					<Button onClick={this.Cadastrar}>Cadastrar</Button>
-				  </Form>
-				  aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>
-				  aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>
-				  aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>
-				  aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>
-				  aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>aaaa<br/>
-				*/}
+				<Row className="show-grid my-4" align="center">
+						<Col align="center">
+							{tabela_exibe}
+						</Col>
+					</Row>
 				</Form>
+				
 			</Container>	  
 			</>
 			)
