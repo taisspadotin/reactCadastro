@@ -226,3 +226,31 @@ $laranja: #231c1b;
 		padding-left: 3%;
 	}
 	*/
+	
+	
+.slides{
+	background: #22251e;
+	height: 100%;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	
+}	
+.carousel-caption{
+		h3{
+			@include fontepadrao;
+			font-size: 3em;
+		}
+		p{
+			font-family: 'Roboto', sans-serif !important;
+		}
+	}
+.imagem_car{
+	width: 100%;
+	height:auto;
+	
+}
+@media only screen and (max-width: 600px) {
+	.imagem_car{
+		height: 100%;
+	}	
+}
