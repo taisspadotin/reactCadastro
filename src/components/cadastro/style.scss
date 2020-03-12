@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-$inputcolor: #651210; /*variavel para a cor do input*/
-
+$inputcolor: #be9a11; /*variavel para a cor do input*/
+$corbase: #23261f;
 $fundo: #fff;
 /*LABEL FLUTUANTE -------------------------------------------------------*/
 @mixin floatborda{
@@ -123,3 +123,43 @@ $fundo: #fff;
 			text-decoration: none;
 		}
 	}
+	
+.botaoanimado{
+	background: none;
+	border: none;
+	width: 150px! important;
+	margin-top: 1%;
+	.button{
+		background: $corbase !important;
+		color: #fff;
+		width: 100%;
+		&:hover{
+			background: $corbase;
+		}
+	}
+    .content{
+		background: $corbase;
+		color: #fff;
+	}
+}	
+
+.tabela{
+	thead{
+		tr{
+			th{
+				background: lighten($inputcolor, 55%) !important;
+				border-color: lighten($inputcolor, 40%) !important;
+			}
+		}
+	}
+}
+.Alerta{
+	color: #721c24;
+	font-family: 'Roboto', sans-serif;
+	border-color:  #721c24 !important;
+	
+	span{
+		color: #721c24;
+	}
+	/*background: #f8d7da !important;*/
+}
