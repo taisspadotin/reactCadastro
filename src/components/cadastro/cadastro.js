@@ -77,6 +77,7 @@ class Cadastro extends Component{
 			this.launch_modal('Erro de cadastro','Preencha o CPF!','Alerta');
 			this.refCpf.current.focus();
 		}
+
 		else{
 			//chamando a api para cadastro
 			const user = {
@@ -116,6 +117,13 @@ class Cadastro extends Component{
 			  })*/
 		}
 		
+	}
+	
+	launch_modal =(titulo, mensagem, classe)=>{
+		let divModal = [titulo, mensagem, classe]
+			this.setState({divModal});
+			this.setState({smShow:true});
+			
 	}
 	
 	launch_modal =(titulo, mensagem, classe)=>{
@@ -178,7 +186,9 @@ class Cadastro extends Component{
 			<Alert variant="danger">
 				<Alert.Heading>Nenhum registro encontrado!</Alert.Heading>
 				<p>
+
 				  Verifique se o sistema est· conectado ao banco de dados corretamente,
+				  Verifique se o sistema est√° conectado ao banco de dados corretamente,
 				   se esse for o caso verifique se existem registros no banco.
 				  </p>
 			  </Alert>;
@@ -233,6 +243,7 @@ class Cadastro extends Component{
 					</Col>
 					<Col  xs={12} md={4}>
 						<div className="label-float">
+
 							<input type="text" ref={this.refTelefone} onInput={(e) => this.setState({telefone: telefoneMask(e.target.value)})} value={this.state.telefone} maxLength="15" placeholder=" " />
 							<label>Telefone</label>
 						</div>
