@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Navbar, Nav, NavDropdown, Form, FormControl, Row, Col} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown, Form, FormControl, Row, Col, Carousel} from 'react-bootstrap';
 import './style.scss';
 import { Label } from 'semantic-ui-react'
 import {Link} from 'react-router-dom';
@@ -144,54 +144,22 @@ class Inferior extends Component{
 }
 
 class Informacoes extends Component{
-	constructor(props){
-		super(props);
-		 this.div1 = React.createRef();
-		 this.div2 = React.createRef();
-		 
-		
-	}
-	componentDidMount(){
-		
-	}
-	moveDiv =(op)=>{
-		if(op === 1){ 
-			/*this.div1.current.style.opacity ='1';
-			this.div1.current.style.transition = 'opacity .5s linear';
-			this.div1.current.style.transitionDuration = '0.5s';*/
-			
-		/*this.div1.current.style.webkitTransform = 'scale(0.8)';
-		this.div1.current.style.msTransform = 'scale(0.8)';
-		this.div1.current.style.transform = 'scale(0.8)';*/
-		
-		
-			this.div1.current.style.display = "none";
-			this.div2.current.style.display = "block";
-		}
-		else if(op === 2){
-			this.div2.current.style.display = "none";
-			this.div1.current.style.display = "block";
-		}
-	}
+	
+	
 	render(){
 		return(
 			<div className="informacoes">
 				<Row>
 				<Col xs={12} md={6} className="lado1" style={{textAlign: 'center'}} align="center">
-					<div ref={this.div1} onClick={()=>this.moveDiv(1)} style={{transition: 'opacity .5s linear'}}>
-						<img src="https://cdn.pixabay.com/photo/2016/08/11/23/55/redwood-national-park-1587301_960_720.jpg" style={{width:'100%', height: '100%'}}/>
+					<div style={{margin: '5%'}}>
+						<small ><br/>Dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.Ullamcorper malesuada proin libero nunc. Sed risus pretium quam vulputate dignissim suspendisse. Velit dignissim sodales ut eu sem integer. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sapien faucibus et molestie ac. Maecenas sed enim ut sem viverra aliquet. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Id neque aliquam vestibulum morbi blandit cursus. Sed velit dignissim sodales ut eu sem integer.Dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.Ullamcorper malesuada proin libero nunc. Sed risus pretium quam vulputate dignissim suspendisse. Velit dignissim sodales ut eu sem integer. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sapien faucibus et molestie ac. Maecenas sed enim ut sem viverra aliquet. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Id neque aliquam vestibulum morbi blandit cursus. Sed velit dignissim sodales ut eu sem integer.</small>
 					</div>
-					<div ref={this.div2} onClick={()=>this.moveDiv(2)} style={{display:'none'}}>
-						<img src="https://cdn.pixabay.com/photo/2014/10/10/10/49/forest-483207_960_720.jpg" style={{width:'100%', height: '100%'}}/>
-					</div>
-					{/*<img src={require("./pessoa.jpg")} style={{width:'60%', height: '200px'}}/>
-					<br/>
-					<small>Dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.</small>*/}
 				</Col>
 				<Col xs={12} md={6} className="lado2" style={{textAlign: 'center'}}>
 					<br/><br/>
 					<h1>Lateral</h1>
 					<h3>Ullamcorper malesuada proin libero nunc. Sed risus pretium quam vulputate dignissim suspendisse. Velit dignissim sodales ut eu sem integer. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Sapien faucibus et molestie ac. Maecenas sed enim ut sem viverra aliquet. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Id neque aliquam vestibulum morbi blandit cursus. Sed velit dignissim sodales ut eu sem integer.</h3>
+					<br/>
 				</Col>
 				</Row>
 			</div>
@@ -206,8 +174,46 @@ class Meio extends Component{
 	}
 	render(){
 		return(
-			<div className="meio">
+		<div style={{ width: '100%'}}>
+			<Carousel style={{height:"400px"}}>
+			  <Carousel.Item style={{height:"400px"}}>
+				  
+				  <img
+				  className="imagem_car"
+				  src={require('./gato2.jpg')}
+				  alt="First slide"/>
+				  
+				  
+				  
+				<Carousel.Caption >
+				  <h3>First slide label</h3>
+				  <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+				</Carousel.Caption>
+			  </Carousel.Item>
+			  <Carousel.Item style={{height:"400px"}}>
+				<div className="slides">
+					
+				</div>
+				<Carousel.Caption>
+				  <h3>Second slide label</h3>
+				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				</Carousel.Caption>
+			  </Carousel.Item>
+			  <Carousel.Item style={{height:"400px"}}>
+				 <img
+				  className="imagem_car"
+				  src={require('./mato.jpg')}
+				  alt="First slide"
+				  
+				  />
 				
+
+				<Carousel.Caption>
+				  <h3>Third slide label</h3>
+				  <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+				</Carousel.Caption>
+			  </Carousel.Item>
+			</Carousel>
 			</div>
 		)
 	}
@@ -230,7 +236,7 @@ export default class Home extends Component{
 				</div>
 			</div>
 			<Inferior/>
-			{/*<Meio/>*/}
+			<Meio/>
 			<Informacoes/>
 			</>
 		)

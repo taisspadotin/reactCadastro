@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row, Col, Alert, Modal} from 'react-bootstrap';
 import axios, {serviceUrl, onSuccess,onFailure} from 'axios';
 import './style.scss';
-import Cabecalho from '../cabecalho/cabecalho';;
-
-const options = [
-  { key: 'm', text: 'Masculino', value: 'masculino' },
-  { key: 'f', text: 'Feminino', value: 'feminino' },
-  { key: 'o', text: 'Outro', value: 'outro' },
-]
-
+import Cabecalho from '../cabecalho/cabecalho';
+/*import {Link} from 'react-router-dom';*/
+import { cpfMask, telefoneMask } from './mask';
 
 class ListaPessoas extends Component{
 	
@@ -33,8 +28,11 @@ class Cadastro extends Component{
 			telefone: '',
 			nascimento: '',
 			dados: [],
-			registros: 0
+			registros: 0,
+			smShow: false,
+			divModal: []
 		};
+		
 		/*REFS DOS INPUTS*/
 		this.INome = null;
 		this.setRefNome = element =>{
@@ -45,6 +43,7 @@ class Cadastro extends Component{
 		this.refEmail = React.createRef();
 		this.refId = React.createRef();
 		this.refTelefone = React.createRef();
+		
 	}
 	
 	componentDidMount() {
@@ -66,9 +65,17 @@ class Cadastro extends Component{
 	}
 	
 	Cadastrar = () =>{
-		if(this.INome.value==''){
-			alert("Preencha o nome");
+		if(this.INome.value === ''){
+			this.launch_modal('Erro de cadastro','preencha o nome!','Alerta');
 			this.INome.focus();
+		}
+		else if(this.refEmail.current.value === ''){
+			this.launch_modal('Erro de cadastro','Preencha o Email','Alerta');
+			this.refEmail.current.focus();
+		}
+		else if(this.refCpf.current.value === ''){
+			this.launch_modal('Erro de cadastro','Preencha o CPF!','Alerta');
+			this.refCpf.current.focus();
 		}
 		else{
 			//chamando a api para cadastro
@@ -80,7 +87,24 @@ class Cadastro extends Component{
 			  telefone: this.state.telefone
 			};	
 			
-			axios.post(`http://localhost/apiReact/Pessoa.php`, JSON.stringify(user))
+			fetch("http://localhost/apiReact/Pessoa.php",{
+				method: 'POST',
+				body: JSON.stringify(user)
+				}).then(response =>{
+					return response.json();
+				}).then(data =>{
+					//console.log(data.mensagem);
+				if(data.mensagem == 'sucesso')
+				{
+					this.launch_modal('Sucesso','Cadastro realizado com sucesso!','Sucesso');
+				}
+				else
+				{
+					this.launch_modal('Erro','Erro ao realizar cadastro!','Alerta');
+				}
+			})
+			
+			/*axios.post(`http://localhost/apiReact/Pessoa.php`, JSON.stringify(user))
 			  .then(res => {
 				if(res.data == 'erro'){
 					alert('Erro ao inserir os dados');
@@ -89,9 +113,16 @@ class Cadastro extends Component{
 					alert('Dados inseridos com sucesso!');
 				}
 				//console.log(res.data);
-			  })
+			  })*/
 		}
-		//alert('yee');
+		
+	}
+	
+	launch_modal =(titulo, mensagem, classe)=>{
+		let divModal = [titulo, mensagem, classe]
+			this.setState({divModal});
+			this.setState({smShow:true});
+			
 	}
 	CarregaDados =(nome, id, cpf, nascimento, email, telefone)=>{
 		//alert('teste');
@@ -115,11 +146,14 @@ class Cadastro extends Component{
 			axios.delete(`http://localhost/apiReact/Pessoa.php`, {params: {id: id}});
 		
 	}
+	closemodal =() =>{
+		this.setState({smShow: false});
+	}
 	render(){
 		let tabela_exibe = '';
-		if(this.state.registros != 0)//Se tiver algum registro na tabela ele insere a parte de busca com cabeÃ§alho no corpo
+		if(this.state.registros != 0)//Se tiver algum registro na tabela ele insere a parte de busca com cabeçalho no corpo
 		{
-			tabela_exibe = <table className="ui celled table">
+			tabela_exibe = <table className="ui celled table tabela">
 								<thead>
 									<tr>
 										<th>Name</th>
@@ -139,12 +173,40 @@ class Cadastro extends Component{
 								</tbody>	
 							</table>;
 		}
+		else{
+			tabela_exibe = 
+			<Alert variant="danger">
+				<Alert.Heading>Nenhum registro encontrado!</Alert.Heading>
+				<p>
+				  Verifique se o sistema está conectado ao banco de dados corretamente,
+				   se esse for o caso verifique se existem registros no banco.
+				  </p>
+			  </Alert>;
+		}
+		
+		
 			return(
 			<>
 			<Cabecalho/>
 			
 			<Container>
 				 <Form>
+					<Modal
+					size="sm"
+					show={this.state.smShow}
+					onHide={() =>this.closemodal()}
+					aria-labelledby="example-modal-sizes-title-sm"
+					>
+						<Modal.Header className={this.state.divModal[2]} closeButton>
+					  <Modal.Title id="example-modal-sizes-title-sm">
+						{this.state.divModal[0]}
+					  </Modal.Title>
+					</Modal.Header>
+					<Modal.Body className={this.state.divModal[2]}>
+					{this.state.divModal[1]}
+					</Modal.Body>
+				  </Modal>
+		  
 					<br/>
 					<Row className="show-grid my-4">
 					<Col className="Titulo">
@@ -157,7 +219,6 @@ class Cadastro extends Component{
 						<div className="sub">
 							<input type="text" onInput={(e) => this.setState({nome: e.target.value})}  ref={this.setRefNome} placeholder=" " />
 							<label>Nome</label>		
-							<label>Nome</label>		
 							<small>Preencha o nome completo</small>		
 						</div>
 						</div>
@@ -165,14 +226,14 @@ class Cadastro extends Component{
 				</Row>
 				<Row className="show-grid my-2">
 					<Col  xs={12} md={8}>
-						<div className="label-float">
-							<input type="text" ref={this.refEmail} onInput={(e) => this.setState({email: e.target.value})} placeholder=" " />
+						<div className="label-float" >
+							<input type="email" ref={this.refEmail} onInput={(e) => this.setState({email: e.target.value})} placeholder=" " />
 							<label>Email</label>
 						</div>
 					</Col>
 					<Col  xs={12} md={4}>
 						<div className="label-float">
-							<input type="text" ref={this.refTelefone} onInput={(e) => this.setState({telefone: e.target.value})} placeholder=" " />
+							<input type="text" ref={this.refTelefone} onInput={(e) => this.setState({telefone: telefoneMask(e.target.value)})} value={this.state.telefone} maxLength="15" placeholder=" " />
 							<label>Telefone</label>
 						</div>
 					</Col>
@@ -186,7 +247,7 @@ class Cadastro extends Component{
 					</Col>
 					<Col xs={12} md={6}>
 						<div className="label-float">
-							<input type="text" ref={this.refCpf} onInput={(e) => this.setState({cpf: e.target.value})} placeholder=" " />
+							<input type="text" ref={this.refCpf} onInput={(e) => this.setState({cpf: cpfMask(e.target.value)})} value={cpfMask(this.state.cpf)} placeholder=" " />
 							<label>CPF</label>
 						</div>
 					</Col>
@@ -201,13 +262,42 @@ class Cadastro extends Component{
 				</Row>	
 				<Row className="show-grid my-4">
 					<Col  align="center">
-						<button className="ui button">Limpar</button>
 					
-						<Button onClick={this.Cadastrar}>Cadastrar</Button>
+						<button className="botaoanimado">
+							<div className="ui animated button" tabIndex="0">
+							  <div className="visible content">Limpar</div>
+							  <div className="hidden content">
+								<i className="eraser icon"></i>
+							  </div>
+							</div>
+						</button>
 					
-						<Button onClick={()=>this.Alterar()}>Alterar</Button>
+						<button className="botaoanimado" onClick={this.Cadastrar}>
+							<div className="ui animated button" tabIndex="0">
+							  <div className="visible content">Cadastar</div>
+							  <div className="hidden content">
+								<i className="arrow right icon"></i>
+							  </div>
+							</div>
+						</button>
+					
+						<button className="botaoanimado" onClick={()=>this.Alterar()}>
+							<div className="ui animated button" tabIndex="0">
+							  <div className="visible content">Alterar</div>
+							  <div className="hidden content">
+								<i className="pencil alternate icon"></i>
+							  </div>
+							</div>
+						</button>
 						
-						<Button onClick={()=>this.Excluir()}>Excluir</Button>
+						<button className="botaoanimado" onClick={()=>this.Excluir()}>
+							<div className="ui animated button" tabIndex="0">
+							  <div className="visible content">Excluir</div>
+							  <div className="hidden content">
+								<i className="trash alternate icon"></i>
+							  </div>
+							</div>
+						</button>
 					</Col>					
 				</Row>
 				<Row className="show-grid my-4" align="center">
